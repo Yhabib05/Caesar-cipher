@@ -15,6 +15,7 @@ def encrypt_caesar(plain, shift):
 
 def decrypt_caesar(cipher, shift):
     plain = str()
+    
     for letter in cipher:
         if letter.isupper():
             plain += chr(((ord(letter) - 65) - shift) % 26 + 65)
