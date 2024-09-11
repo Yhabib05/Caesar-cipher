@@ -1,0 +1,61 @@
+import argparse
+
+def verify_input(input_string):
+    # Verify that the input is only alphabetic
+    return input_string.isalpha()
+
+def encrypt_caesar(plain, shift):
+    cipher = str()
+    for letter in plain:
+        if letter.isupper():
+            cipher += chr(((ord(letter) - 65) + shift) % 26 + 65)
+        elif letter.islower():
+            cipher += chr(((ord(letter) - 97) + shift) % 26 + 97)
+    return cipher 
+
+def decrypt_caesar(cipher, shift):
+    plain = str()
+    
+    for letter in cipher:
+        if letter.isupper():
+            plain += chr(((ord(letter) - 65) - shift) % 26 + 65)
+        elif letter.islower():
+            plain += chr(((ord(letter) - 97) - shift) % 26 + 97)
+    return plain 
+
+def main():
+    parser = argparse.ArgumentParser(description='Caesar cipher encryption and decryption.')
+    
+    # Add optional arguments
+    parser.add_argument('-E', '--encrypt', action='store_true', help='Encrypt the text.')
+    parser.add_argument('-D', '--decrypt', action='store_true', help='Decrypt the text.')
+    parser.add_argument('text', type=str, help='The text to encrypt or decrypt.')
+    parser.add_argument('shift', type=int, help='The shift value for the Caesar cipher.')
+
+    # Analyze arguments
+    args = parser.parse_args()
+
+    # Check for mutually exclusive actions
+    if args.encrypt and args.decrypt:
+        print("Error: You cannot specify both -E and -D options.")
+        return
+
+    if not args.encrypt and not args.decrypt:
+        print("Error: You must specify either -E or -D option.")
+        return
+
+    # Verify the validity of the text
+    if not verify_input(args.text):
+        print("Invalid input. Please enter only letters (uppercase or lowercase).")
+        return
+    
+    # Execute the chosen action
+    if args.encrypt:
+        result = encrypt_caesar(args.text, args.shift)
+        print("Ciphertext =", result)
+    elif args.decrypt:
+        result = decrypt_caesar(args.text, args.shift)
+        print("Plaintext =", result)
+
+if __name__ == "__main__":
+    main()
