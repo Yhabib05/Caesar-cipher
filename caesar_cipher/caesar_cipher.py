@@ -1,8 +1,12 @@
 import argparse
 
 def verify_input(input_string):
-    # Verify that the input is only alphabetic
-    return input_string.isalpha()
+    # Check if input contains at least one letter and is not purely numeric
+    has_letter = any(char.isalpha() for char in input_string)
+    is_numeric = input_string.isdigit()
+    
+    # Return True if the input has at least one letter and is not purely numeric
+    return has_letter and not is_numeric
 
 def encrypt_caesar(plain, shift):
     cipher = str()
@@ -11,6 +15,8 @@ def encrypt_caesar(plain, shift):
             cipher += chr(((ord(letter) - 65) + shift) % 26 + 65)
         elif letter.islower():
             cipher += chr(((ord(letter) - 97) + shift) % 26 + 97)
+        else:
+            cipher+=letter # Return non-alphabetic characters as they are
     return cipher 
 
 def decrypt_caesar(cipher, shift):
@@ -21,6 +27,8 @@ def decrypt_caesar(cipher, shift):
             plain += chr(((ord(letter) - 65) - shift) % 26 + 65)
         elif letter.islower():
             plain += chr(((ord(letter) - 97) - shift) % 26 + 97)
+        else:
+            plain+=letter # Return non-alphabetic characters as they are
     return plain 
 
 def main():
